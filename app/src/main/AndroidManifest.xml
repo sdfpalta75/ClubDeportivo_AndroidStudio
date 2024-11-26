@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Club"
         tools:targetApi="31">
         <activity
+            android:name=".RegistroDatosUsuario"
+            android:exported="false" />
+        <activity
             android:name=".Vencimientos2"
             android:exported="false" />
         <activity

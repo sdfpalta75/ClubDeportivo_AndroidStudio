@@ -65,12 +65,13 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
                 + CAMPO_USUARIOS_AVAL + " INTEGER)")
         db.execSQL(crearTablaUsuarios)
 
-        val agregarUsuarioAdmin = ("INSERT INTO " + TABLA_USUARIOS + " ("
-                + CAMPO_USUARIOS_USUARIO + ", "
-                + CAMPO_USUARIOS_CLAVE + ", "
-                + CAMPO_USUARIOS_AVAL + ") "
-                + "VALUES ('admin', 'admin', 0)")
-        db.execSQL(agregarUsuarioAdmin)
+        // BORRAR ESTO CUANDO ESTE LA ACTIVITY DE REGISTRO!!!
+//        val agregarUsuarioAdmin = ("INSERT INTO " + TABLA_USUARIOS + " ("
+//                + CAMPO_USUARIOS_USUARIO + ", "
+//                + CAMPO_USUARIOS_CLAVE + ", "
+//                + CAMPO_USUARIOS_AVAL + ") "
+//                + "VALUES ('admin', 'admin', 0)")
+//        db.execSQL(agregarUsuarioAdmin)
 
         val crearTablaClientes = ("CREATE TABLE " + TABLA_CLIENTES + " ("
                 + CAMPO_CLIENTES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -120,11 +121,21 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
     }
 
     // Funciones relacionadas a usuarios administradores
-    fun validarUsuario(nombre: String, clave: String):Boolean {
+    fun registrarUsuario(usuario: String, clave: String, autoriza: String): Long {
+        val db = this.writableDatabase
+        val registro = ContentValues().apply {
+            put(CAMPO_USUARIOS_USUARIO, usuario)
+            put(CAMPO_USUARIOS_CLAVE, clave)
+            put(CAMPO_USUARIOS_AVAL, autoriza)
+        }
+        val nuevoRegistro = db.insert(TABLA_USUARIOS, null, registro)
+        return nuevoRegistro
+    }
+
+    fun validarAcceso(nombre: String, clave: String):Boolean {
         val bd = this.readableDatabase
         val sql = "SELECT clave FROM Usuarios WHERE usuario = ?"
         val cursor = bd.rawQuery(sql, arrayOf(nombre))
-
         if (cursor.moveToFirst()){
             val claveAlmacenada = cursor.getString(0)
             cursor.close()
@@ -134,6 +145,49 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
             cursor.close()
             return false
         }
+    }
+
+    fun contarUsuariosRegistrados(): Int {
+        val bd = this.readableDatabase
+        val sql = "SELECT count(*) FROM Usuarios"
+        val cursor = bd.rawQuery(sql, null)
+        cursor.moveToFirst()
+        val respuesta = cursor.getInt(0)
+        cursor.close()
+        return respuesta
+    }
+
+    fun informarDisponibilidadNombreUsuario(usuario: String):Boolean {
+        val bd = this.readableDatabase
+        val sql = "SELECT count(*) FROM Usuarios WHERE usuario = ?"
+        val cursor = bd.rawQuery(sql, arrayOf(usuario))
+        cursor.moveToFirst()
+        val respuesta = cursor.getInt(0)
+        cursor.close()
+        return respuesta == 0
+    }
+
+    fun informarIdUsuario(usuario: String, clave: String): Int {
+        val bd = this.readableDatabase
+        val sql = "SELECT id_usuario FROM Usuarios WHERE usuario = ? AND clave = ?"
+        val cursor = bd.rawQuery(sql, arrayOf(usuario, clave))
+        if (cursor.moveToFirst()){
+            val claveAlmacenada = cursor.getInt(0)
+            cursor.close()
+            return claveAlmacenada
+        }
+        else {
+            cursor.close()
+            return -1
+        }
+    }
+
+    fun cambiarClaveUsuario(nroUsuario: String, claveNueva: String): Boolean {
+        val bd = this.writableDatabase
+        var nuevosDatos = ContentValues()
+        nuevosDatos.put("clave", claveNueva)
+        var resultado = bd.update("Usuarios", nuevosDatos, "id_usuario=?", arrayOf(nroUsuario))
+        if (resultado==0) return false else return true
     }
 
     // Funciones relacionadas a clientes (socios y no socios)
@@ -168,7 +222,6 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
         val bd = this.readableDatabase
         val sql = "SELECT id_cliente FROM Clientes WHERE documento = ?"
         val cursor = bd.rawQuery(sql, arrayOf(documento))
-
         if (cursor.moveToFirst()) {
             val idAlmacenado = cursor.getString(0)
             cursor.close()
@@ -185,7 +238,6 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
         val bd = this.readableDatabase
         val sql = "SELECT $idEsperado FROM $tablaDeBusqueda WHERE id_cliente = ?"
         val cursor = bd.rawQuery(sql, arrayOf(idCliente))
-
         if (cursor.moveToFirst()) {
             val idAlmacenado = cursor.getString(0)
             cursor.close()
@@ -202,7 +254,6 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
         val bd = this.readableDatabase
         val sql = "SELECT id_cliente FROM $tablaDeBusqueda WHERE $campoDeBusqueda = ?"
         val cursor = bd.rawQuery(sql, arrayOf(idABuscar))
-
         if (cursor.moveToFirst()) {
             val idAlmacenado = cursor.getString(0)
             cursor.close()
@@ -226,7 +277,7 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
         return nuevoRegistro
     }
 
-    fun buscarVencimientosSocios(fecha: String): List<String> {
+    fun listarSociosConPagoEnUnaFecha(fecha: String): List<String> {
         val listadoVencimientos = mutableListOf<String>()
         val bd = this.readableDatabase
         val sql = "SELECT Clientes.nombre, Clientes.apellido, Socios.id_socio " +
@@ -234,7 +285,6 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
                   "WHERE (Clientes.id_cliente = PagosSocios.id_cliente " +
                          "AND Clientes.id_cliente = Socios.id_cliente " +
                          "AND PagosSocios.fecha_pago = '"+fecha+"')"
-
         val cursor = bd.rawQuery(sql, null)
         if (cursor.moveToFirst()) {
             do {
@@ -257,9 +307,7 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
         val bd = this.readableDatabase
         val sql = "SELECT id_cliente FROM PagosSocios " +
                   "WHERE (id_cliente = $nroCliente AND fecha_pago > '"+fecha+"')"
-
         val cursor = bd.rawQuery(sql, null)
-
         if (cursor.moveToFirst()) {
             cursor.close()
             return "si"

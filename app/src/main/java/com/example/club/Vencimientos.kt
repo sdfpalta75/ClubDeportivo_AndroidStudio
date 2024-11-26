@@ -32,7 +32,7 @@ class Vencimientos : AppCompatActivity() {
         val fechaActual = LocalDate.now()
         val unMesAtras = fechaActual.plusMonths(-1)
 
-        val vencimientos = bdHelper.buscarVencimientosSocios(unMesAtras.toString())
+        val vencimientos = bdHelper.listarSociosConPagoEnUnaFecha(unMesAtras.toString())
 
         val adaptadorDeLista = ArrayAdapter(this, android.R.layout.simple_list_item_1, vencimientos)
         lvListado.adapter = adaptadorDeLista

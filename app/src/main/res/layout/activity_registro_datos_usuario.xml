@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#233F3B"
+    android:orientation="vertical">
+
+    <!--  Cuerpo  -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="46dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="serif"
+            android:text="CLUB"
+            android:textColor="#FFFFFF"
+            android:textSize="36dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="serif"
+            android:text="DEPORTIVO"
+            android:textColor="#FFFFFF"
+            android:textSize="36dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="serif"
+            android:text="Registro de usuario"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="62dp" />
+
+        <EditText
+            android:id="@+id/etNuevoUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/ed_txt_redondo_selector"
+            android:hint="Nombre de usuario"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:fontFamily="serif"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#803232"
+            android:textSize="16dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="4dp" />
+
+        <EditText
+            android:id="@+id/etClaveNuevoUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/ed_txt_redondo_selector"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:paddingHorizontal="20dp"
+            android:fontFamily="serif"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#803232"
+            android:textSize="16dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="4dp" />
+
+        <EditText
+            android:id="@+id/etRepetirClave"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/ed_txt_redondo_selector"
+            android:hint="Repetir Contraseña"
+            android:inputType="textPassword"
+            android:paddingHorizontal="20dp"
+            android:fontFamily="serif"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#803232"
+            android:textSize="16dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="4dp" />
+
+        <EditText
+            android:id="@+id/etUsuarioAvalante"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/ed_txt_redondo_selector"
+            android:hint="Usuario Avalante"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:fontFamily="serif"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#803232"
+            android:textSize="16dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="4dp" />
+
+        <EditText
+            android:id="@+id/etClaveUsuarioAvalante"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/ed_txt_redondo_selector"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:paddingHorizontal="20dp"
+            android:fontFamily="serif"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#803232"
+            android:textSize="16dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:fontFamily="serif"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:text="Una contraseña válida:\n      Posee 6 o más caracteres.\n     Combina mayúsculas, minúsculas y números."
+            android:textAlignment= "viewStart"/>
+
+    </LinearLayout>
+
+    <!--  Botonera horizontal de cierre  -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="114dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnRegistrar"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#3ec26a"
+            android:fontFamily="serif"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            android:text="Registrar"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnCancelar"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#803232"
+            android:fontFamily="serif"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            android:text="Cancelar"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
