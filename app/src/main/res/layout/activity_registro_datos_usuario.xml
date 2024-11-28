@@ -123,6 +123,7 @@
             android:textSize="16dp" />
 
         <Space
+            android:id="@+id/spUsuarioAvalante"
             android:layout_width="match_parent"
             android:layout_height="4dp" />
 

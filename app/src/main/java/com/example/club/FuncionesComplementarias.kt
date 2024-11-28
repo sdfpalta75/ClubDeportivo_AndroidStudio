@@ -5,9 +5,9 @@ import android.content.Context
 
 class FuncionesComplementarias {
 
-    fun validarClave (clave: String) : Boolean {
-        val expresionRegular = Regex("(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)")
-        return clave.length >= 6 && expresionRegular.matches(clave)
+    fun validarClave (clave: String, largoMinimo: Int) : Boolean {
+        val expresionRegular = Regex("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).*$")
+        return clave.length >= largoMinimo && expresionRegular.matches(clave)
     }
 
 
