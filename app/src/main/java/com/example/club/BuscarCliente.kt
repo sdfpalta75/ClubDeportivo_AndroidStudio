@@ -37,10 +37,9 @@ class BuscarCliente : AppCompatActivity() {
             fun acceder(origen: String, tipoCliente: String, idCliente: String) {
                 if (origen == "btnPagar") {
                     val INTENT = Intent(this, Pagos1::class.java)
-                    val ORIGEN = "pagos1"
                     INTENT.putExtra("cliente", tipoCliente)
                     INTENT.putExtra("nroTipoCliente", idCliente)
-                    INTENT.putExtra("origen", ORIGEN)
+                    INTENT.putExtra("origen", "pagos1")
                     startActivity(INTENT)
                 }
                 else {

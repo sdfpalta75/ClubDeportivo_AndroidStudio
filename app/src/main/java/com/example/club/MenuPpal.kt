@@ -34,7 +34,7 @@ class MenuPpal : AppCompatActivity() {
             startActivity(INTENT)
         }
 
-        // Ir a la activity Vencimientos
+        // Ir a la activity Vencimientos_ListView
         BTN_VENCIMIENTOS.setOnClickListener {
             val INTENT = Intent(this, Vencimientos::class.java)
             startActivity(INTENT)

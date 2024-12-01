@@ -2,7 +2,6 @@ package com.example.club
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -39,7 +38,8 @@ class RegistroDatosUsuario : AppCompatActivity() {
 
         // ACOMODAR VISTA EN RELACION AL ORIGEN CAMBIAR CONTRASEÑA
         if (ORIGEN == "cambiarClave"){
-            TV_TITULO.text = "Cambio de contraseña"
+            val titulo = "Cambio de contraseña"
+            TV_TITULO.text = titulo
             ET_USUARIO_AVAL.visibility = View.GONE
             SP_USUARIO_AVAL.visibility = View.GONE
             // aca asignar nombres de variable acordes, a los objetos a utilizar
@@ -70,7 +70,6 @@ class RegistroDatosUsuario : AppCompatActivity() {
                     else return false
                 }
             }
-
 
             if (controlarCamposVacios()) { // CONTROL DE CAMPOS VACIOS
                 Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()

@@ -21,8 +21,8 @@ class Acceso : AppCompatActivity() {
         // Capturar elementos locales
         val TXT_USUARIO = findViewById<EditText>(R.id.txtUsuario)
         val TXT_CLAVE = findViewById<EditText>(R.id.txtClave)
-        val TXT_REGISTRAR_USUARIO = findViewById<TextView>(R.id.txtRegistrarUsuario)
-        val TXT_CAMBIAR_CLAVE = findViewById<TextView>(R.id.txtCambiarClave)
+        val TV_REGISTRAR_USUARIO = findViewById<TextView>(R.id.txtRegistrarUsuario)
+        val TV_CAMBIAR_CLAVE = findViewById<TextView>(R.id.txtCambiarClave)
         val BTN_ACCEDER = findViewById<Button>(R.id.btnAcceder)
         val BTN_SALIR = findViewById<Button>(R.id.btnSalir)
 
@@ -30,22 +30,21 @@ class Acceso : AppCompatActivity() {
             TXT_USUARIO.isEnabled = false
             TXT_CLAVE.isEnabled = false
             BTN_ACCEDER.isEnabled = false
-            TXT_CAMBIAR_CLAVE.isEnabled = false
+            TV_CAMBIAR_CLAVE.isEnabled = false
         }
 
         // Registrar Usuario
-        TXT_REGISTRAR_USUARIO.setOnClickListener {
+        TV_REGISTRAR_USUARIO.setOnClickListener {
             val INTENT = Intent(this, RegistroDatosUsuario::class.java)
             INTENT.putExtra("origen", "registrarUsuario")
             startActivity(INTENT)
         }
 
         // Cambiar contraseña
-        TXT_CAMBIAR_CLAVE.setOnClickListener {
+        TV_CAMBIAR_CLAVE.setOnClickListener {
             val INTENT = Intent(this, RegistroDatosUsuario::class.java)
             INTENT.putExtra("origen", "cambiarClave")
             startActivity(INTENT)
-            //Toast.makeText(this, "Funcionalidad en desarrollo", Toast.LENGTH_SHORT).show()
         }
 
         // Acceder a la activity MenuPpal

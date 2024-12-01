@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.widget.Toast
 
 class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -64,14 +63,6 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
                 + CAMPO_USUARIOS_CLAVE + " TEXT, "
                 + CAMPO_USUARIOS_AVAL + " INTEGER)")
         db.execSQL(crearTablaUsuarios)
-
-        // BORRAR ESTO CUANDO ESTE LA ACTIVITY DE REGISTRO!!!
-//        val agregarUsuarioAdmin = ("INSERT INTO " + TABLA_USUARIOS + " ("
-//                + CAMPO_USUARIOS_USUARIO + ", "
-//                + CAMPO_USUARIOS_CLAVE + ", "
-//                + CAMPO_USUARIOS_AVAL + ") "
-//                + "VALUES ('admin', 'admin', 0)")
-//        db.execSQL(agregarUsuarioAdmin)
 
         val crearTablaClientes = ("CREATE TABLE " + TABLA_CLIENTES + " ("
                 + CAMPO_CLIENTES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -277,28 +268,56 @@ class ClubDatabaseHelper(context:Context) : SQLiteOpenHelper(context, DATABASE_N
         return nuevoRegistro
     }
 
-    fun listarSociosConPagoEnUnaFecha(fecha: String): List<String> {
-        val listadoVencimientos = mutableListOf<String>()
+    fun listarSociosConPagoEnUnaFecha(fecha: String): List<ItemLista> {
+        val listadoVencimientos = mutableListOf<ItemLista>()
         val bd = this.readableDatabase
         val sql = "SELECT Clientes.nombre, Clientes.apellido, Socios.id_socio " +
-                  "FROM Clientes, PagosSocios, Socios " +
-                  "WHERE (Clientes.id_cliente = PagosSocios.id_cliente " +
-                         "AND Clientes.id_cliente = Socios.id_cliente " +
-                         "AND PagosSocios.fecha_pago = '"+fecha+"')"
+                "FROM Clientes, PagosSocios, Socios " +
+                "WHERE (Clientes.id_cliente = PagosSocios.id_cliente " +
+                "AND Clientes.id_cliente = Socios.id_cliente " +
+                "AND PagosSocios.fecha_pago = '"+fecha+"') " +
+                "ORDER BY Clientes.apellido, Clientes.nombre, Socios.id_socio"
         val cursor = bd.rawQuery(sql, null)
         if (cursor.moveToFirst()) {
             do {
                 val nroSocio = cursor.getString(cursor.getColumnIndex("id_socio"))
                 val nombre = cursor.getString(cursor.getColumnIndex("nombre"))
                 val apellido = cursor.getString(cursor.getColumnIndex("apellido"))
-                listadoVencimientos.add("Socio $nroSocio, $nombre $apellido")
+                listadoVencimientos.add(ItemLista(nroSocio, "$apellido, $nombre"))
             } while (cursor.moveToNext())
             cursor.close()
             return listadoVencimientos
         }
         else {
             cursor.close()
-            listadoVencimientos.add("Hoy no se registran vencimientos")
+            listadoVencimientos.add(ItemLista("", "No hay registros"))
+            return listadoVencimientos
+        }
+    }
+
+    fun listarNoSociosConPagoEnUnaFecha(fecha: String): List<ItemLista> {
+        val listadoVencimientos = mutableListOf<ItemLista>()
+        val bd = this.readableDatabase
+        val sql = "SELECT Clientes.nombre, Clientes.apellido, Clientes.documento " +
+                "FROM Clientes, PagosNoSocios, NoSocios " +
+                "WHERE (Clientes.id_cliente = PagosNoSocios.id_cliente " +
+                "AND Clientes.id_cliente = NoSocios.id_cliente " +
+                "AND PagosNoSocios.fecha_pago = '"+fecha+"')" +
+                "ORDER BY Clientes.apellido, Clientes.nombre, Clientes.documento"
+        val cursor = bd.rawQuery(sql, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val nroDocumento = cursor.getString(cursor.getColumnIndex("documento"))
+                val nombre = cursor.getString(cursor.getColumnIndex("nombre"))
+                val apellido = cursor.getString(cursor.getColumnIndex("apellido"))
+                listadoVencimientos.add(ItemLista(nroDocumento, "$apellido, $nombre"))
+            } while (cursor.moveToNext())
+            cursor.close()
+            return listadoVencimientos
+        }
+        else {
+            cursor.close()
+            listadoVencimientos.add(ItemLista("", "No hay registros"))
             return listadoVencimientos
         }
     }
